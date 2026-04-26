@@ -2,3 +2,5 @@ scrapy
 fastapi
 uvicorn
 twisted
+cryptography
+pyOpenSSL
