@@ -50,4 +50,20 @@ def run_spider(query):
 if __name__ == "__main__":
     query = sys.argv[1] if len(sys.argv) > 1 else "python"
     results = run_spider(query)
+    print(json.dumps(results))    runner = CrawlerRunner()
+    
+    deferred = runner.crawl(GoogleSpider, query=query)
+    deferred.addBoth(lambda _: reactor.stop())
+    
+    reactor.run()
+    
+    # Get results from the spider instance
+    spider = runner.spiders[0] if runner.spiders else None
+    if spider and hasattr(spider, 'results'):
+        return spider.results
+    return []
+
+if __name__ == "__main__":
+    query = sys.argv[1] if len(sys.argv) > 1 else "python"
+    results = run_spider(query)
     print(json.dumps(results))
